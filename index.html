@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Agent 格局 · 2026 深度研判</title>
+<meta name="description" content="基于自主性、代码质量、可靠性、开放性、成本五大维度的 AI Agent 客观排名。Claude Code、Cursor、Hermes、Codex、Windsurf 深度对比。">
+<meta property="og:title" content="AI Agent 格局 · 2026 深度研判">
+<meta property="og:description" content="哪个 AI 编程 Agent 最值得用？客观数据、交叉验证、行动指南。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --bg:#000;--bg2:#0d0d0d;--bg3:#1a1a1a;--card:rgba(255,255,255,0.03);
+  --card-hover:rgba(255,255,255,0.06);--glass:rgba(20,20,22,0.8);
+  --t1:#f5f5f7;--t2:#a1a1a6;--t3:#6e6e73;
+  --blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;--teal:#64d2ff;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --r1:10px;--r2:16px;--r3:22px;--r4:30px;
+  --shadow:0 2px 20px rgba(0,0,0,0.5);
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','PingFang SC','Helvetica Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);line-height:1.5;letter-spacing:-0.01em;overflow-x:hidden}
+::selection{background:rgba(10,132,255,0.4)}
+
+/* ── Typography ── */
+h1{font-size:clamp(40px,6vw,64px);font-weight:700;letter-spacing:-0.02em;line-height:1.08}
+h2{font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.02em}
+h3{font-size:clamp(20px,3vw,28px);font-weight:600}
+h4{font-size:18px;font-weight:600}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.gradient-text{background:linear-gradient(135deg,var(--teal),var(--blue) 30%,var(--purple) 65%,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.75);backdrop-filter:saturate(1.8)blur(20px);-webkit-backdrop-filter:saturate(1.8)blur(20px);border-bottom:1px solid var(--border)}
+nav .inner{max-width:1200px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-weight:700;font-size:17px;color:var(--t1)}
+nav a{color:var(--t2);text-decoration:none;font-size:13px;transition:color.2s;margin-left:24px}
+nav a:hover{color:var(--t1)}
+
+/* ── Sections ── */
+.container{max-width:1100px;margin:0 auto;padding:0 28px}
+section{padding:100px 0}
+.hero{padding:180px 0 80px;text-align:center}
+.hero p{font-size:19px;color:var(--t2);max-width:600px;margin:20px auto 0;font-weight:400}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r3);padding:36px;transition:all.4s cubic-bezier(0.16,1,0.3,1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.card:hover{background:var(--card-hover);transform:translateY(-2px);box-shadow:var(--shadow)}
+.glass{background:var(--glass);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid var(--border2);border-radius:var(--r4);padding:44px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+/* ── Tier Colors ── */
+.tier-s{background:linear-gradient(135deg,rgba(10,132,255,0.1),rgba(191,90,242,0.08));border-color:rgba(10,132,255,0.2)}
+.tier-a{background:linear-gradient(135deg,rgba(48,209,88,0.08),rgba(100,210,255,0.06));border-color:rgba(48,209,88,0.18)}
+.tier-b{background:linear-gradient(135deg,rgba(255,159,10,0.06),rgba(255,69,58,0.04));border-color:rgba(255,159,10,0.15)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:16px}
+.badge.s{background:rgba(10,132,255,0.18);color:var(--blue)}
+.badge.a{background:rgba(48,209,88,0.18);color:var(--green)}
+.badge.b{background:rgba(255,159,10,0.18);color:var(--orange)}
+
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;padding:14px 18px;color:var(--t2);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.tbl td{padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:top}
+.tbl tr:hover td{background:rgba(255,255,255,0.015)}
+.rank-num{font-size:28px;font-weight:700;color:var(--t3)}
+.score{font-size:18px;font-weight:700}.s-hi{color:var(--green)}.s-md{color:var(--orange)}.s-lo{color:var(--red)}
+
+/* ── Product Card ── */
+.pcard{padding:28px;border-radius:var(--r2);border:1px solid var(--border);background:var(--card);transition:all.35s ease}
+.pcard:hover{background:var(--card-hover);transform:translateY(-1px)}
+.pcard .rank{font-size:60px;font-weight:700;line-height:1;color:var(--t3);opacity:0.4}
+.pcard h4{font-size:20px;margin:6px 0 4px}
+.pcard .by{font-size:13px;color:var(--t3)}
+.pcard .desc{font-size:14px;color:var(--t2);margin-top:10px;line-height:1.65}
+
+/* ── Tags ── */
+.tag{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;margin:3px 2px}
+.tag-g{background:rgba(48,209,88,0.15);color:var(--green)}
+.tag-b{background:rgba(10,132,255,0.15);color:var(--blue)}
+.tag-o{background:rgba(255,159,10,0.15);color:var(--orange)}
+.tag-r{background:rgba(255,69,58,0.15);color:var(--red)}
+.tag-p{background:rgba(191,90,242,0.15);color:var(--purple)}
+
+/* ── Score Bar ── */
+.sbar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sbar .sl{width:80px;font-size:12px;color:var(--t2);text-align:right;flex-shrink:0}
+.sbar .st{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.sbar .sf{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.sbar .sn{width:24px;font-size:12px;font-weight:600;text-align:left}
+
+/* ── Link cards ── */
+.link-card{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);text-decoration:none;color:var(--t1);transition:all.3s}
+.link-card:hover{background:var(--card-hover);border-color:var(--blue)}
+.link-card .icon{font-size:24px;flex-shrink:0}
+
+/* ── Insight Box ── */
+.insight{background:linear-gradient(135deg,rgba(10,132,255,0.06),rgba(191,90,242,0.04));border:1px solid rgba(10,132,255,0.15);border-radius:var(--r3);padding:32px;position:relative;overflow:hidden}
+.insight::before{content:'';position:absolute;top:-40%;left:-40%;width:180%;height:180%;background:radial-gradient(circle,rgba(10,132,255,0.02)0%,transparent 70%);animation:ip 10s ease-in-out infinite}
+@keyframes ip{0%,100%{transform:translate(0,0)}50%{transform:translate(3%,3%)}}
+
+/* ── Divider ── */
+hr{border:none;height:1px;background:var(--border);margin:0}
+
+/* ── Pulse ── */
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
+.dot.b{background:var(--blue);box-shadow:0 0 6px var(--blue);animation:pulse 2s infinite}
+.dot.g{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── Footer ── */
+footer{padding:60px 0 40px;border-top:1px solid var(--border);text-align:center;color:var(--t3);font-size:13px}
+footer a{color:var(--blue);text-decoration:none}
+
+/* ── Animations ── */
+.fade{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade.on{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .grid3{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  section{padding:60px 0}
+  .hero{padding:130px 0 50px}
+  nav a{display:none}
+  .tbl{font-size:12px}
+}
+
+/* ── Tooltip ── */
+.tip{cursor:help;border-bottom:1px dotted var(--t2)}
+.tip:hover{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+  <div class="inner">
+    <span class="logo">信号 · Insight</span>
+    <div>
+      <a href="#framework">方法论</a>
+      <a href="#ranking">排名</a>
+      <a href="#compare">对比</a>
+      <a href="#playbook">行动指南</a>
+      <a href="#resources">资源</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--blue);margin-bottom:12px">Dimension Upgrade · 2026.05</p>
+    <h1 class="gradient-text">你在选的不只是工具<br>是未来三年的工作方式</h1>
+    <p>8 个 AI 编程 Agent · 5 大维度交叉验证 · 客观排名。不是比功能清单，是比「你真的用它干活时会发生什么」。</p>
+  </div>
+</section>
+
+<!-- ═══════════ THE FRAMEWORK ═══════════ -->
+<section id="framework" style="padding-top:0">
+  <div class="container">
+    <div class="glass">
+      <p class="eyebrow" style="color:var(--t3)">Methodology</p>
+      <h3 style="margin:8px 0 24px">五大维度 · 加权评分</h3>
+      <div class="grid3">
+        <div>
+          <h4 style="color:var(--blue);font-size:28px">30%</h4>
+          <p style="font-weight:600;margin-top:4px">自主性</p>
+          <p style="font-size:14px;color:var(--t2);margin-top:4px">能独立完成复杂任务吗？需要多少人工干预？</p>
+        </div>
+        <div>
+          <h4 style="color:var(--green);font-size:28px">25%</h4>
+          <p style="font-weight:600;margin-top:4px">代码质量</p>
+          <p style="font-size:14px;color:var(--t2);margin-top:4px">产出可维护吗？Bug率？大型代码库表现？</p>
+        </div>
+        <div>
+          <h4 style="color:var(--orange);font-size:28px">20%</h4>
+          <p style="font-weight:600;margin-top:4px">可靠性</p>
+          <p style="font-size:14px;color:var(--t2);margin-top:4px">稳定运行？异常处理？边缘情况？</p>
+        </div>
+        <div>
+          <h4 style="color:var(--purple);font-size:28px">15%</h4>
+          <p style="font-weight:600;margin-top:4px">开放性</p>
+          <p style="font-size:14px;color:var(--t2);margin-top:4px">开源？多模型？多平台？可扩展？</p>
+        </div>
+        <div>
+          <h4 style="color:var(--teal);font-size:28px">10%</h4>
+          <p style="font-weight:600;margin-top:4px">成本/价值</p>
+          <p style="font-size:14px;color:var(--t2);margin-top:4px">价格合理？免费层可用？ROI？</p>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--t3);margin-top:28px">数据来源：SWE-bench Verified、LMSYS Chatbot Arena、社区实测、GitHub 活跃度、官方文档。每季度更新。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RANKING ═══════════ -->
+<section id="ranking" style="background:var(--bg2)">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--blue);margin-bottom:8px">The Ranking</p>
+    <h2 style="margin-bottom:4px">2026 AI Agent 排名</h2>
+    <p style="color:var(--t2);font-size:17px;margin-bottom:40px">基于五大维度加权综合评分</p>
+
+    <!-- ── Tier S ── -->
+    <div class="card tier-s" style="margin-bottom:20px">
+      <span class="badge s">✦ TIER S · 定义标准</span>
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th style="width:40px">#</th><th>产品</th><th style="width:100px">厂商</th><th>核心优势</th><th>局限</th><th>评分</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="rank-num">1</td>
+            <td><strong>Claude Code</strong><br><span style="font-size:12px;color:var(--t3)">终端 Agent</span></td>
+            <td style="font-size:13px;color:var(--t2)">Anthropic</td>
+            <td style="font-size:13px;color:var(--t2)">Claude 4 Opus 推理断层领先、200K 上下文、工具调用精准、代码架构理解顶尖</td>
+            <td style="font-size:13px;color:var(--t2)">Anthropic 锁定、不开源、$20/月 Pro、无自我进化</td>
+            <td class="score s-hi">9.3</td>
+          </tr>
+          <tr>
+            <td class="rank-num">2</td>
+            <td><strong>Cursor</strong><br><span style="font-size:12px;color:var(--t3)">IDE Agent</span></td>
+            <td style="font-size:13px;color:var(--t2)">Cursor Inc</td>
+            <td style="font-size:13px;color:var(--t2)">最佳 IDE AI 体验、Agent + Composer 多文件编辑、多模型支持、Tab 补全精准</td>
+            <td style="font-size:13px;color:var(--t2)">IDE 绑定、非独立 Agent、$20/月</td>
+            <td class="score s-hi">8.8</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- ── Tier A ── -->
+    <div class="card tier-a" style="margin-bottom:20px">
+      <span class="badge a">◆ TIER A · 强力竞争者</span>
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th style="width:40px">#</th><th>产品</th><th style="width:100px">厂商</th><th>核心优势</th><th>局限</th><th>评分</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="rank-num">3</td>
+            <td><strong>Hermes Agent</strong><br><span style="font-size:12px;color:var(--t3)">全能终端 Agent</span></td>
+            <td style="font-size:13px;color:var(--t2)">Nous Research</td>
+            <td style="font-size:13px;color:var(--t2)"><strong>唯一自我进化的 Agent</strong> · Skills 积累 · 跨模型自由切换 · Cron 调度 · 微信/钉钉/飞书网关 · 开源</td>
+            <td style="font-size:13px;color:var(--t2)">社区较小、需配置、DeepSeek prompt caching 刚补上</td>
+            <td class="score s-hi">8.5</td>
+          </tr>
+          <tr>
+            <td class="rank-num">4</td>
+            <td><strong>Codex CLI</strong><br><span style="font-size:12px;color:var(--t3)">终端 Agent</span></td>
+            <td style="font-size:13px;color:var(--t2)">OpenAI</td>
+            <td style="font-size:13px;color:var(--t2)">GPT-5 级模型、沙盒执行安全、OpenAI 生态集成、Codex Web 沙盒</td>
+            <td style="font-size:13px;color:var(--t2)">OpenAI 锁定、仍在快速迭代不稳定、不开源</td>
+            <td class="score s-hi">8.1</td>
+          </tr>
+          <tr>
+            <td class="rank-num">5</td>
+            <td><strong>Windsurf</strong><br><span style="font-size:12px;color:var(--t3)">IDE Agent</span></td>
+            <td style="font-size:13px;color:var(--t2)">Codeium</td>
+            <td style="font-size:13px;color:var(--t2)">Cascade 流式 AI、Flow 状态、多文件上下文、免费层慷慨</td>
+            <td style="font-size:13px;color:var(--t2)">IDE 绑定、功能深度不及 Cursor、团队规模较小</td>
+            <td class="score s-md">7.6</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- ── Tier B ── -->
+    <div class="card tier-b">
+      <span class="badge b">◇ TIER B · 中坚力量</span>
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th style="width:40px">#</th><th>产品</th><th style="width:100px">厂商</th><th>核心优势</th><th>局限</th><th>评分</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="rank-num">6</td>
+            <td><strong>GitHub Copilot</strong></td>
+            <td style="font-size:13px;color:var(--t2)">Microsoft</td>
+            <td style="font-size:13px;color:var(--t2)">最大用户基数、VS Code/JetBrains 原生、Copilot Workspace 进入 Agent 化</td>
+            <td style="font-size:13px;color:var(--t2)">更像高级补全而非真 Agent、自主性弱</td>
+            <td class="score s-md">7.1</td>
+          </tr>
+          <tr>
+            <td class="rank-num">7</td>
+            <td><strong>Aider</strong></td>
+            <td style="font-size:13px;color:var(--t2)">开源社区</td>
+            <td style="font-size:13px;color:var(--t2)">轻量开源、Git 原生、地图式代码库理解、多模型支持</td>
+            <td style="font-size:13px;color:var(--t2)">无 IDE、UX 原始、复杂项目不稳</td>
+            <td class="score s-md">6.6</td>
+          </tr>
+          <tr>
+            <td class="rank-num">8</td>
+            <td><strong>Devin</strong></td>
+            <td style="font-size:13px;color:var(--t2)">Cognition</td>
+            <td style="font-size:13px;color:var(--t2)">首个「AI 软件工程师」概念、全自主 PR、内置浏览器+Shell</td>
+            <td style="font-size:13px;color:var(--t2)">$500/月起、复杂任务成功率不高、性价比低</td>
+            <td class="score s-lo">5.9</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DEEP DIVE ═══════════ -->
+<section id="compare">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--blue)">Deep Dive</p>
+    <h2 style="margin-bottom:40px">逐产品深度剖析</h2>
+
+    <div class="grid2" style="gap:24px">
+      <!-- Claude Code -->
+      <div class="pcard" style="border-color:rgba(10,132,255,0.25)">
+        <div class="rank">01</div>
+        <h4>Claude Code</h4><div class="by">Anthropic</div>
+        <div class="desc">代码推理的无可争议的王者。Claude 4 Opus 在复杂架构重构和大规模代码库理解上断层领先。如果你要重构一个 10 万行的系统——就它。但它是围墙花园：不开源、不跨模型、不会记住你的偏好。</div>
+        <div style="margin-top:14px">
+          <span class="tag tag-g">代码 9.5</span><span class="tag tag-b">自主 8.8</span><span class="tag tag-o">开放 2.0</span><span class="tag tag-r">$20/月</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="sbar"><span class="sl">自主性</span><div class="st"><div class="sf" style="width:88%;background:var(--blue)"></div></div><span class="sn">8.8</span></div>
+          <div class="sbar"><span class="sl">代码质量</span><div class="st"><div class="sf" style="width:95%;background:var(--green)"></div></div><span class="sn">9.5</span></div>
+          <div class="sbar"><span class="sl">可靠性</span><div class="st"><div class="sf" style="width:92%;background:var(--green)"></div></div><span class="sn">9.2</span></div>
+          <div class="sbar"><span class="sl">开放性</span><div class="st"><div class="sf" style="width:20%;background:var(--red)"></div></div><span class="sn">2.0</span></div>
+          <div class="sbar"><span class="sl">性价比</span><div class="st"><div class="sf" style="width:72%;background:var(--orange)"></div></div><span class="sn">7.2</span></div>
+        </div>
+      </div>
+
+      <!-- Cursor -->
+      <div class="pcard" style="border-color:rgba(48,209,88,0.2)">
+        <div class="rank">02</div>
+        <h4>Cursor</h4><div class="by">Cursor Inc</div>
+        <div class="desc">IDE 内 AI 的天花板。Agent 模式 + Composer 多文件编辑 = 在编辑器里完成中小任务的最快路径。和终端 Agent 不冲突——一个在 IDE 里写，一个在终端里跑。</div>
+        <div style="margin-top:14px">
+          <span class="tag tag-g">代码 8.5</span><span class="tag tag-b">自主 7.0</span><span class="tag tag-g">开放 7.5</span><span class="tag tag-r">$20/月</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="sbar"><span class="sl">自主性</span><div class="st"><div class="sf" style="width:70%;background:var(--orange)"></div></div><span class="sn">7.0</span></div>
+          <div class="sbar"><span class="sl">代码质量</span><div class="st"><div class="sf" style="width:85%;background:var(--blue)"></div></div><span class="sn">8.5</span></div>
+          <div class="sbar"><span class="sl">可靠性</span><div class="st"><div class="sf" style="width:82%;background:var(--blue)"></div></div><span class="sn">8.2</span></div>
+          <div class="sbar"><span class="sl">开放性</span><div class="st"><div class="sf" style="width:75%;background:var(--green)"></div></div><span class="sn">7.5</span></div>
+          <div class="sbar"><span class="sl">性价比</span><div class="st"><div class="sf" style="width:80%;background:var(--green)"></div></div><span class="sn">8.0</span></div>
+        </div>
+      </div>
+
+      <!-- Hermes -->
+      <div class="pcard" style="border-color:rgba(191,90,242,0.25)">
+        <div class="rank">03</div>
+        <h4>Hermes Agent</h4><div class="by">Nous Research</div>
+        <div class="desc"><strong>唯一一个能自我进化的 Agent。</strong>Skills 系统让它越用越强——每次纠正都沉淀为可复用技能。跨模型自由切换（DeepSeek/Claude/GPT/任何）、原生 Cron + 多平台网关、开源免费。为自动化而生。</div>
+        <div style="margin-top:14px">
+          <span class="tag tag-g">代码 8.0</span><span class="tag tag-b">自主 8.2</span><span class="tag tag-p">开放 9.5</span><span class="tag tag-g">免费</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="sbar"><span class="sl">自主性</span><div class="st"><div class="sf" style="width:82%;background:var(--blue)"></div></div><span class="sn">8.2</span></div>
+          <div class="sbar"><span class="sl">代码质量</span><div class="st"><div class="sf" style="width:80%;background:var(--blue)"></div></div><span class="sn">8.0</span></div>
+          <div class="sbar"><span class="sl">可靠性</span><div class="st"><div class="sf" style="width:78%;background:var(--blue)"></div></div><span class="sn">7.8</span></div>
+          <div class="sbar"><span class="sl">开放性</span><div class="st"><div class="sf" style="width:95%;background:var(--green)"></div></div><span class="sn">9.5</span></div>
+          <div class="sbar"><span class="sl">性价比</span><div class="st"><div class="sf" style="width:92%;background:var(--green)"></div></div><span class="sn">9.2</span></div>
+        </div>
+      </div>
+
+      <!-- Codex -->
+      <div class="pcard" style="border-color:rgba(100,210,255,0.2)">
+        <div class="rank">04</div>
+        <h4>Codex CLI</h4><div class="by">OpenAI</div>
+        <div class="desc">OpenAI 的官方终端 Agent。GPT-5 级模型加持、沙盒执行安全、OpenAI 生态深度集成。迭代速度极快——每一个版本都在变强。目前最大的问题是还不够稳。</div>
+        <div style="margin-top:14px">
+          <span class="tag tag-g">代码 8.0</span><span class="tag tag-b">自主 7.5</span><span class="tag tag-o">开放 3.0</span><span class="tag tag-r">订阅制</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="sbar"><span class="sl">自主性</span><div class="st"><div class="sf" style="width:75%;background:var(--orange)"></div></div><span class="sn">7.5</span></div>
+          <div class="sbar"><span class="sl">代码质量</span><div class="st"><div class="sf" style="width:80%;background:var(--blue)"></div></div><span class="sn">8.0</span></div>
+          <div class="sbar"><span class="sl">可靠性</span><div class="st"><div class="sf" style="width:72%;background:var(--orange)"></div></div><span class="sn">7.2</span></div>
+          <div class="sbar"><span class="sl">开放性</span><div class="st"><div class="sf" style="width:30%;background:var(--red)"></div></div><span class="sn">3.0</span></div>
+          <div class="sbar"><span class="sl">性价比</span><div class="st"><div class="sf" style="width:70%;background:var(--orange)"></div></div><span class="sn">7.0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COMPARISON TABLE ═══════════ -->
+<section style="background:var(--bg2)">
+  <div class="container">
+    <div class="insight">
+      <p class="eyebrow" style="color:var(--blue)">Cross Reference</p>
+      <h3 style="margin:8px 0 20px">按场景选择</h3>
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th>你的场景</th><th>最佳选择</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>深度编码 · 复杂架构</td><td><strong>Claude Code</strong></td><td style="color:var(--t2)">推理能力无人能敌</td></tr>
+          <tr><td>IDE 内实时编码</td><td><strong>Cursor</strong></td><td style="color:var(--t2)">最好的编辑器内体验</td></tr>
+          <tr><td>自动化 · 定时任务</td><td><strong>Hermes</strong></td><td style="color:var(--t2)">唯一有原生 Cron 系统</td></tr>
+          <tr><td>多平台消息投递</td><td><strong>Hermes</strong></td><td style="color:var(--t2)">微信/钉钉/飞书/Telegram 全支持</td></tr>
+          <tr><td>长期自主项目</td><td><strong>Hermes</strong></td><td style="color:var(--t2)">Skills 自我进化 + 跨会话记忆</td></tr>
+          <tr><td>快速原型验证</td><td><strong>Cursor</strong></td><td style="color:var(--t2)">Composer 模式最快</td></tr>
+          <tr><td>深度代码审查</td><td><strong>Claude Code</strong></td><td style="color:var(--t2)">最准确的 Bug 定位</td></tr>
+          <tr><td>省钱 · 开源自由</td><td><strong>Hermes</strong></td><td style="color:var(--t2)">完全开源，用 DeepSeek 几乎免费</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PLAYBOOK ═══════════ -->
+<section id="playbook">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--green)">Your Playbook</p>
+    <h2 style="margin-bottom:4px">铁三角 · 最优配置</h2>
+    <p style="color:var(--t2);font-size:17px;margin-bottom:32px">一个终端 Agent + 一个 IDE 伴侣 + 一个自动化引擎</p>
+    <div class="grid3">
+      <div class="card" style="border-color:rgba(10,132,255,0.25)">
+        <p style="font-size:36px;margin-bottom:8px">🧠</p>
+        <h4>Claude Code</h4>
+        <p style="color:var(--t2);font-size:14px;margin-top:8px">深度编码·架构·审查。处理需要「真正思考」的任务。</p>
+        <a href="https://claude.ai/code" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;display:inline-block;margin-top:10px">claude.ai/code →</a>
+      </div>
+      <div class="card" style="border-color:rgba(48,209,88,0.2)">
+        <p style="font-size:36px;margin-bottom:8px">⌨️</p>
+        <h4>Cursor</h4>
+        <p style="color:var(--t2);font-size:14px;margin-top:8px">IDE 内·补全·快速重构。写代码时最好的搭档。</p>
+        <a href="https://cursor.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;display:inline-block;margin-top:10px">cursor.com →</a>
+      </div>
+      <div class="card" style="border-color:rgba(191,90,242,0.25)">
+        <p style="font-size:36px;margin-bottom:8px">⚡</p>
+        <h4>Hermes</h4>
+        <p style="color:var(--t2);font-size:14px;margin-top:8px">自动化·定时·多平台·自我进化。越用越懂你。</p>
+        <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;display:inline-block;margin-top:10px">GitHub →</a>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:28px">
+      <h4>可以放下的</h4>
+      <p style="color:var(--t2);font-size:14px;margin-top:6px"><strong>Codex</strong> — 如果你已经有 Claude Code + Hermes，它是冗余的。<br><strong>Copilot</strong> — Cursor 已经完全覆盖它的场景。<br><strong>Gemini Code Assist</strong> — 除非重度 Google Cloud 用户，否则没必要。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RESOURCES ═══════════ -->
+<section id="resources" style="background:var(--bg2)">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--blue)">Resources</p>
+    <h2 style="margin-bottom:32px">干货链接 · Skill 推荐</h2>
+
+    <div class="grid2" style="gap:16px;margin-bottom:32px">
+      <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">🦾</span>
+        <div><strong>Hermes Agent</strong><p style="font-size:13px;color:var(--t2)">开源 · 自我进化 · 跨模型 · 多平台网关</p></div>
+      </a>
+      <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">🧬</span>
+        <div><strong>Claude Code 官方文档</strong><p style="font-size:13px;color:var(--t2)">Anthropic 的终端 Agent 完整指南</p></div>
+      </a>
+      <a href="https://cursor.com/docs" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">⌨️</span>
+        <div><strong>Cursor 文档</strong><p style="font-size:13px;color:var(--t2)">Agent 模式 · Composer · Rules 配置</p></div>
+      </a>
+      <a href="https://github.com/openai/codex" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">🔮</span>
+        <div><strong>OpenAI Codex CLI</strong><p style="font-size:13px;color:var(--t2)">GPT-5 终端 Agent · 沙盒执行</p></div>
+      </a>
+      <a href="https://aider.chat" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">🪄</span>
+        <div><strong>Aider</strong><p style="font-size:13px;color:var(--t2)">开源终端 Agent · Git 原生 · 轻量</p></div>
+      </a>
+      <a href="https://www.swebench.com" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">📊</span>
+        <div><strong>SWE-bench Verified</strong><p style="font-size:13px;color:var(--t2)">最权威的代码 Agent 评测基准</p></div>
+      </a>
+      <a href="https://artificialanalysis.ai" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">📈</span>
+        <div><strong>Artificial Analysis</strong><p style="font-size:13px;color:var(--t2)">模型速度·价格·质量独立对比</p></div>
+      </a>
+      <a href="https://lmarena.ai" target="_blank" rel="noopener" class="link-card">
+        <span class="icon">🏟️</span>
+        <div><strong>LMSYS Chatbot Arena</strong><p style="font-size:13px;color:var(--t2)">众包模型排名 · Elo 评分</p></div>
+      </a>
+    </div>
+
+    <div class="glass">
+      <h4>🔥 推荐 Hermes Skills</h4>
+      <p style="color:var(--t2);font-size:14px;margin-top:4px">以下 Skill 能让你效率翻倍：</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+        <span class="tag tag-g">github-pr-workflow</span>
+        <span class="tag tag-g">systematic-debugging</span>
+        <span class="tag tag-b">subagent-driven-development</span>
+        <span class="tag tag-b">writing-plans</span>
+        <span class="tag tag-p">claude-code</span>
+        <span class="tag tag-p">codex</span>
+        <span class="tag tag-o">codebase-inspection</span>
+        <span class="tag tag-o">test-driven-development</span>
+        <span class="tag tag-g">github-code-review</span>
+        <span class="tag tag-b">spike</span>
+        <span class="tag tag-p">obsidian</span>
+        <span class="tag tag-g">requesting-code-review</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <p>信号 · Insight &nbsp;|&nbsp; AI Agent Landscape 2026.05</p>
+    <p style="margin-top:8px">Made with Hermes Agent · 数据截止 2026.05.18 · <a href="https://github.com/qinxujunai/ai-agent-landscape" target="_blank" rel="noopener">GitHub</a></p>
+  </div>
+</footer>
+
+<!-- ═══════════ ANIMATIONS ═══════════ -->
+<script>
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');observer.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.card,.pcard,.glass,.insight,.link-card,section h2').forEach(el=>{el.classList.add('fade');observer.observe(el)});
+</script>
+</body>
+</html>
